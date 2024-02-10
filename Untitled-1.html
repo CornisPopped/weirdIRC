@@ -3,142 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Styled Container Background</title>
+    <title>iMessage Bubbles</title>
     <style>
         body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
 
-.container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    --s: 82px;
-    --c1: #b2b2b2;
-    --c2: #ffffff;
-    --c3: #d9d9d9;
-    --_g: var(--c3) 0 120deg, #0000 0;
-    background: conic-gradient(from -60deg at 50% calc(100% / 3), var(--_g)),
-        conic-gradient(from 120deg at 50% calc(200% / 3), var(--_g)),
-        conic-gradient(
-            from 60deg at calc(200% / 3),
-            var(--c3) 60deg,
-            var(--c2) 0 120deg,
-            #0000 0
-        ),
-        conic-gradient(from 180deg at calc(100% / 3), var(--c1) 60deg, var(--_g)),
-        linear-gradient(
-            90deg,
-            var(--c1) calc(100% / 6),
-            var(--c2) 0 50%,
-            var(--c1) 0 calc(500% / 6),
-            var(--c2) 0
-        );
-    background-size: calc(1.732 * var(--s)) var(--s);
-    animation: fall 20s linear infinite;
-}
+        .container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            --s: 82px;
+            --c1: #b2b2b2;
+            --c2: #ffffff;
+            --c3: #d9d9d9;
+            --_g: var(--c3) 0 120deg, #0000 0;
+            background: conic-gradient(from -60deg at 50% calc(100% / 3), var(--_g)),
+                conic-gradient(from 120deg at 50% calc(200% / 3), var(--_g)),
+                conic-gradient(
+                    from 60deg at calc(200% / 3),
+                    var(--c3) 60deg,
+                    var(--c2) 0 120deg,
+                    #0000 0
+                ),
+                conic-gradient(from 180deg at calc(100% / 3), var(--c1) 60deg, var(--_g)),
+                linear-gradient(
+                    90deg,
+                    var(--c1) calc(100% / 6),
+                    var(--c2) 0 50%,
+                    var(--c1) 0 calc(500% / 6),
+                    var(--c2) 0
+                );
+            background-size: calc(1.732 * var(--s)) var(--s);
+            animation: fall 20s linear infinite;
+        }
 
-@keyframes fall {
-    0% {
-        background-position: 0% 0%;
-    }
-    100% {
-        background-position: 0% 100%;
-    }
-}
+        @keyframes fall {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 0% 100%;
+            }
+        }
 
-.overlay {
-    position: fixed;
-    width: 60%; /* Adjust width as needed */
-    height: 70%; /* Adjust height as needed */
-    top: 15%;
-    z-index: 1;
-    border-radius: 5%; /* Adjust border radius as needed */
-    background: linear-gradient(145deg, #b9b9b9, #ffffff);
-    box-shadow:  10px 10px 20px #0a0a0a,
-                 -10px -10px 20px #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 2%; /* Add padding inside the overlay */
-}
+        .overlay {
+            position: fixed;
+            width: 60%; /* Adjust width as needed */
+            height: 70%; /* Adjust height as needed */
+            top: 15%;
+            z-index: 1;
+            border-radius: 5%; /* Adjust border radius as needed */
+            background: linear-gradient(145deg, #b9b9b9, #ffffff);
+            box-shadow:  10px 10px 20px #0a0a0a,
+                        -10px -10px 20px #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-start; /* Align items to the top left */
+            padding: 2%; /* Add padding inside the overlay */
+        }
 
-.message-box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Spread items evenly */
-    width: 90%; /* Adjust the width as needed */
-    border-radius: 15px;
-    overflow: hidden;
-    padding: 1% 5%; /* Adjust padding */
-}
+        .message-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Spread items evenly */
+            width: 90%; /* Adjust the width as needed */
+            border-radius: 15px;
+            overflow: hidden;
+            padding: 1% 5%; /* Adjust padding */
+        }
 
-.message-box input[type="text"],
-.message-box button {
-    padding: 1.5% 2.5%;
-    border: unset;
-    border-radius: 15px;
-    color: #212121;
-    z-index: 1;
-    background: #e8e8e8;
-    position: relative;
-    font-weight: 1000;
-    font-size: 1.5vw; /* Adjust font size relative to viewport width */
-    box-shadow: 2% 4% 4% -1% rgba(0,0,0,0.27);
-    transition: all 250ms;
-    overflow: hidden;
-    cursor: pointer;
-}
+        .message-box input[type="text"],
+        .message-box button {
+            padding: 1.5% 2.5%;
+            border: unset;
+            border-radius: 15px;
+            color: #212121;
+            z-index: 1;
+            background: #e8e8e8;
+            position: relative;
+            font-weight: 1000;
+            font-size: 1.5vw; /* Adjust font size relative to viewport width */
+            box-shadow: 2% 4% 4% -1% rgba(0,0,0,0.27);
+            transition: all 250ms;
+            overflow: hidden;
+            cursor: pointer;
+        }
 
-.message-box input[type="text"] {
-    flex: 1;
-}
+        .message-box input[type="text"] {
+            flex: 1;
+        }
 
-.message-box button {
-    margin-left: 2%; /* Add margin to separate input and button */
-}
+        .message-box button {
+            margin-left: 2%; /* Add margin to separate input and button */
+        }
 
-.message-box button::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 0;
-    border-radius: 15px;
-    background-color: #212121;
-    z-index: -1;
-    box-shadow: 2% 4% 4% -1% rgba(0,0,0,0.27);
-    transition: all 250ms;
-}
+        .message-box button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            border-radius: 15px;
+            background-color: #212121;
+            z-index: -1;
+            box-shadow: 2% 4% 4% -1% rgba(0,0,0,0.27);
+            transition: all 250ms;
+        }
 
-.message-box button:hover {
-    color: #e8e8e8;
-}
+        .message-box button:hover {
+            color: #e8e8e8;
+        }
 
-.message-box button:hover::before {
-    width: 100%;
-}
+        .message-box button:hover::before {
+            width: 100%;
+        }
 
+        .messages-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 10px;
+            padding: 0 5%; /* Adjust padding */
+            overflow-y: auto;
+            max-height: 30%; /* Adjust max height if needed */
+        }
+
+        .message {
+            background-color: #d4d4d4;
+            color: #333;
+            border-radius: 20px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            max-width: 70%;
+            align-self: flex-start;
+        }
+
+        .message.sent {
+            background-color: #000000;
+            color: #fff;
+            align-self: flex-end;
+        }
     </style>
 </head>
 <body>
     <div class="container"></div>
     <div class="overlay">
+        <div class="messages-container"></div>
         <div class="message-box">
-            <input type="text" placeholder="Type your message here...">
-            <button>Send Message</button>
+            <input id="userMessage" type="text" placeholder="Type your message here...">
+            <button onclick="sendMessage()">Send Message</button>
         </div>
     </div>
+
+    <script>
+        function sendMessage() {
+            var userMessageInput = document.getElementById("userMessage");
+            var userMessage = userMessageInput.value.trim();
+
+            if (userMessage !== "") {
+                var messagesContainer = document.querySelector(".messages-container");
+                var messageDiv = document.createElement("div");
+                messageDiv.textContent = userMessage;
+                messageDiv.classList.add("message", "sent");
+                messagesContainer.appendChild(messageDiv);
+
+                // Clear input field after sending message
+                userMessageInput.value = "";
+            }
+        }
+    </script>
 </body>
 </html>
