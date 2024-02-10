@@ -58,29 +58,30 @@
 
         .overlay {
             position: fixed;
-            width: 60%; /* Adjust width as needed */
-            height: 70%; /* Adjust height as needed */
+            width: 60%;
+            height: 70%;
             top: 15%;
+            right: 20%;
             z-index: 1;
-            border-radius: 5%; /* Adjust border radius as needed */
+            border-radius: 5%;
             background: linear-gradient(145deg, #b9b9b9, #ffffff);
             box-shadow:  10px 10px 20px #0a0a0a,
                         -10px -10px 20px #ffffff;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            align-items: flex-start; /* Align items to the top left */
-            padding: 2%; /* Add padding inside the overlay */
+            align-items: flex-start;
+            padding: 2%;
         }
 
         .message-box {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Spread items evenly */
-            width: 90%; /* Adjust the width as needed */
+            justify-content: space-between;
+            width: 90%;
             border-radius: 15px;
             overflow: hidden;
-            padding: 1% 5%; /* Adjust padding */
+            padding: 1% 5%;
         }
 
         .message-box input[type="text"],
@@ -93,7 +94,7 @@
             background: #e8e8e8;
             position: relative;
             font-weight: 1000;
-            font-size: 1.5vw; /* Adjust font size relative to viewport width */
+            font-size: 1.5vw;
             box-shadow: 2% 4% 4% -1% rgba(0,0,0,0.27);
             transition: all 250ms;
             overflow: hidden;
@@ -105,7 +106,7 @@
         }
 
         .message-box button {
-            margin-left: 2%; /* Add margin to separate input and button */
+            margin-left: 2%;
         }
 
         .message-box button::before {
@@ -133,11 +134,32 @@
         .messages-container {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: flex-start; /* Align messages to the left */
             margin-top: 10px;
-            padding: 0 5%; /* Adjust padding */
+            padding: 0 5%;
             overflow-y: auto;
-            max-height: 30%; /* Adjust max height if needed */
+            max-height: 50vh;
+            scrollbar-width: thin;
+            scrollbar-color: transparent transparent;
+        }
+
+        .messages-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .messages-container::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        .messages-container:hover::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .message-container {
+            display: flex;
+            margin-bottom: 10px;
+            max-width: calc(100% - 20px); /* Set the maximum width to be the width of the container minus some padding */
         }
 
         .message {
@@ -145,9 +167,9 @@
             color: #333;
             border-radius: 20px;
             padding: 10px 15px;
-            margin-bottom: 10px;
-            max-width: 70%;
+            max-width: 80%; /* Set a maximum width for the message bubble */
             align-self: flex-start;
+            word-wrap: break-word; /* Allow text to wrap within the box */
         }
 
         .message.sent {
@@ -168,21 +190,52 @@
     </div>
 
     <script>
+        // Function to send message
         function sendMessage() {
             var userMessageInput = document.getElementById("userMessage");
             var userMessage = userMessageInput.value.trim();
-
+    
             if (userMessage !== "") {
                 var messagesContainer = document.querySelector(".messages-container");
+                var messageContainer = document.createElement("div");
+                messageContainer.classList.add("message-container");
+    
                 var messageDiv = document.createElement("div");
                 messageDiv.textContent = userMessage;
                 messageDiv.classList.add("message", "sent");
-                messagesContainer.appendChild(messageDiv);
-
+                messageContainer.appendChild(messageDiv);
+    
+                messagesContainer.appendChild(messageContainer);
+    
                 // Clear input field after sending message
                 userMessageInput.value = "";
+    
+                // Scroll to the bottom of the container
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    
+                // Update message bubble size after sending message
+                updateMessageBubbleSize();
             }
         }
+    
+        // Function to update message bubble size
+        function updateMessageBubbleSize() {
+            var messages = document.querySelectorAll(".message.sent");
+            messages.forEach(function(message) {
+                message.style.maxWidth = message.parentElement.clientWidth * 0.8 + "px";
+            });
+        }
+    
+        // Update message bubble size on window resize
+        window.addEventListener('resize', function() {
+            updateMessageBubbleSize();
+            // Wait for resizing to finish before updating the bubble size
+            clearTimeout(window.resizedFinished);
+            window.resizedFinished = setTimeout(updateMessageBubbleSize, 250);
+        });
+    
+        // Initial call to update message bubble size
+        updateMessageBubbleSize();
     </script>
 </body>
 </html>
