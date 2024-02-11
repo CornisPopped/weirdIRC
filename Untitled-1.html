@@ -78,10 +78,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 90%;
+            width: 90%; /* Reduced width to allow more space for the button */
             border-radius: 15px;
             overflow: hidden;
-            padding: 1% 5%;
+            padding: 1% 3%; /* Adjusted padding */
         }
 
         .message-box input[type="text"],
@@ -102,33 +102,13 @@
         }
 
         .message-box input[type="text"] {
-            flex: 1;
+            flex: 1; /* Allow input to expand */
         }
 
         .message-box button {
             margin-left: 2%;
-        }
-
-        .message-box button::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 0;
-            border-radius: 15px;
-            background-color: #212121;
-            z-index: -1;
-            box-shadow: 2% 4% 4% -1% rgba(0,0,0,0.27);
-            transition: all 250ms;
-        }
-
-        .message-box button:hover {
-            color: #e8e8e8;
-        }
-
-        .message-box button:hover::before {
-            width: 100%;
+            flex-shrink: 0; /* Prevent button from shrinking */
+            min-width: 100px; /* Set a minimum width for the button */
         }
 
         .messages-container {
@@ -178,24 +158,21 @@
             align-self: flex-end;
         }
 
-        .emoji-button {
-            padding: 1.5% 2.5%;
-            border: unset;
-            border-radius: 15px;
-            color: #212121;
-            z-index: 1;
-            background: #e8e8e8;
-            position: relative;
-            font-weight: 1000;
-            font-size: 1.5vw;
-            box-shadow: 2% 4% 4% -1% rgba(0,0,0,0.27);
-            cursor: pointer;
-        }
-
-        .emoji-button:hover {
-            color: #e8e8e8;
+        /* Adjust the position of the emoji picker */
+        .emojionearea-picker {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999; /* Ensure it's above other elements */
+            background-color: white; /* Adjust as needed */
+            border: 1px solid #ccc; /* Adjust as needed */
+            border-radius: 5px; /* Adjust as needed */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adjust as needed */
+            padding: 10px; /* Adjust as needed */
         }
     </style>
+    <!-- Include Twemoji Picker library CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.css" integrity="sha512-0Nyh7Nf4sn+T48aTb6VFkhJe0FzzcOlqqZMahy/rhZ8Ii5Q9ZXG/1CbunUuEbfgxqsQfWXjnErKZosDSHVKQhQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="container"></div>
@@ -203,50 +180,70 @@
         <div class="messages-container"></div>
         <div class="message-box">
             <input id="userMessage" type="text" placeholder="Type your message here...">
-            <button class="trigger">😀</button> <!-- Emoji button -->
             <button onclick="sendMessage()">Send Message</button>
         </div>
     </div>
+    <!-- Emoji Picker Container -->
+    <div id="emojiPickerContainer"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.0.0/dist/emoji-button.min.js"></script>
+    <!-- Include JQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include Twemoji Picker library JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.js" integrity="sha512-aGWPnmdBhJ0leVHhQaRASgb0InV/Z2BWsscdj1Vwt29Oic91wECPixuXsWESpFfCcYPLfOlBZzN2nqQdMxlGTQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
-        const picker = new EmojiButton();
-        const trigger = document.querySelector('.trigger');
+        $(document).ready(function() {
+            // Initialize EmojiOneArea
+            var userMessageInput = $("#userMessage").emojioneArea();
 
-        picker.on('emoji', selection => {
-            trigger.innerHTML = selection.emoji;
+            // Define the button element
+            var emojiButton = $('.message-box button');
+
+            // Show emoji picker on button click
+            emojiButton.on('click', function() {
+                // Position the emoji picker below the button
+                var buttonOffset = emojiButton.offset();
+                $('#emojiPickerContainer').css({
+                    top: buttonOffset.top + emojiButton.outerHeight() + 10, // Adjust for padding
+                    left: buttonOffset.left
+                }).toggle();
+            });
+
+            // Append emoji picker to container
+            $('#emojiPickerContainer').append(userMessageInput.data('emojioneArea').picker);
         });
 
-        trigger.addEventListener('click', () => picker.togglePicker(trigger));
-
-        // Function to send message
+        // Define the sendMessage function
         function sendMessage() {
             var userMessageInput = document.getElementById("userMessage");
             var userMessage = userMessageInput.value.trim();
-    
+
             if (userMessage !== "") {
                 var messagesContainer = document.querySelector(".messages-container");
                 var messageContainer = document.createElement("div");
                 messageContainer.classList.add("message-container");
-    
+
                 var messageDiv = document.createElement("div");
                 messageDiv.textContent = userMessage;
                 messageDiv.classList.add("message", "sent");
                 messageContainer.appendChild(messageDiv);
-    
+
                 messagesContainer.appendChild(messageContainer);
-    
+
                 // Clear input field after sending message
                 userMessageInput.value = "";
-    
+
+                // Clear EmojiOneArea content after sending message
+                $('#userMessage').data('emojioneArea').setText('');
+
                 // Scroll to the bottom of the container
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    
+
                 // Update message bubble size after sending message
                 updateMessageBubbleSize();
             }
         }
-    
+
         // Function to update message bubble size
         function updateMessageBubbleSize() {
             var messages = document.querySelectorAll(".message.sent");
@@ -254,7 +251,7 @@
                 message.style.maxWidth = message.parentElement.clientWidth * 0.8 + "px";
             });
         }
-    
+
         // Update message bubble size on window resize
         window.addEventListener('resize', function() {
             updateMessageBubbleSize();
@@ -262,9 +259,6 @@
             clearTimeout(window.resizedFinished);
             window.resizedFinished = setTimeout(updateMessageBubbleSize, 250);
         });
-    
-        // Initial call to update message bubble size
-        updateMessageBubbleSize();
     </script>
 </body>
 </html>
