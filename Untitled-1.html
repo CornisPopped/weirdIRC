@@ -177,6 +177,24 @@
             color: #fff;
             align-self: flex-end;
         }
+
+        .emoji-button {
+            padding: 1.5% 2.5%;
+            border: unset;
+            border-radius: 15px;
+            color: #212121;
+            z-index: 1;
+            background: #e8e8e8;
+            position: relative;
+            font-weight: 1000;
+            font-size: 1.5vw;
+            box-shadow: 2% 4% 4% -1% rgba(0,0,0,0.27);
+            cursor: pointer;
+        }
+
+        .emoji-button:hover {
+            color: #e8e8e8;
+        }
     </style>
 </head>
 <body>
@@ -185,11 +203,22 @@
         <div class="messages-container"></div>
         <div class="message-box">
             <input id="userMessage" type="text" placeholder="Type your message here...">
+            <button class="trigger">😀</button> <!-- Emoji button -->
             <button onclick="sendMessage()">Send Message</button>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.0.0/dist/emoji-button.min.js"></script>
     <script>
+        const picker = new EmojiButton();
+        const trigger = document.querySelector('.trigger');
+
+        picker.on('emoji', selection => {
+            trigger.innerHTML = selection.emoji;
+        });
+
+        trigger.addEventListener('click', () => picker.togglePicker(trigger));
+
         // Function to send message
         function sendMessage() {
             var userMessageInput = document.getElementById("userMessage");
